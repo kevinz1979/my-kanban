@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MR693 全局任務看板</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #f8fafc; --card: #ffffff; --card-subtle: #f1f5f9;
+      --border: #e2e8f0; --text: #0f172a; --muted: #64748b;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a; --card: #1e293b; --card-subtle: #162032;
+        --border: #334155; --text: #f1f5f9; --muted: #94a3b8;
+      }
+    }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif; }
+    .kanban-col { background: var(--card-subtle); border: 1px solid var(--border); }
+    .task-card { background: var(--card); border: 1px solid var(--border); transition: transform 0.15s, box-shadow 0.15s; }
+    .task-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  </style>
+</head>
+<body class="min-h-screen p-6 md:p-8">
+
+  <!-- Header -->
+  <div class="mb-6 flex flex-wrap justify-between items-center gap-4">
+    <div>
+      <h1 id="board-title" class="text-2xl md:text-3xl font-extrabold tracking-tight">MR693 全局任務看板</h1>
+      <p id="board-subtitle" class="text-sm mt-1" style="color:var(--muted)">Antigravity Agentic Kanban — 跨對話全景整合與自主推進</p>
+      <p id="board-updated" class="text-xs mt-1" style="color:var(--muted)">最後更新：2026-09-08</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <input type="text" id="filter-input" placeholder="🔍 搜尋任務或標籤..." 
+        class="text-xs md:text-sm px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        style="background:var(--card);border-color:var(--border);color:var(--text)"
+        oninput="handleFilter()" />
+    </div>
+  </div>
+
+  <!-- Summary Bar -->
+  <div id="summary-bar" class="flex gap-2.5 mb-6 flex-wrap"></div>
+
+  <!-- Columns -->
+  <div id="kanban-board" class="flex gap-5 overflow-x-auto pb-6 items-start"></div>
+
+  <!-- Footer -->
+  <div class="mt-8 p-4 rounded-xl text-xs flex flex-wrap justify-between items-center gap-2" style="background:var(--card-subtle);border:1px solid var(--border);color:var(--muted)">
+    <div>
+      <strong style="color:var(--text)">🤖 AI 維護說明：</strong>
+      直接編輯同目錄的 <code>tasks.json</code> 即可自動同步最新任務，支援 GitHub Pages 跨裝置瀏覽。
+    </div>
+    <div>
+      <a href="https://github.com/kevinz1979/my-kanban" target="_blank" class="text-blue-500 hover:underline">檢視 GitHub 倉庫</a>
+    </div>
+  </div>
+
+<script>
+const COLOR_MAP = {
+  slate:   { dot:'bg-slate-500',  head:'text-slate-600 dark:text-slate-400',  badge:'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300',  border:'border-slate-500',  pill:'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300' },
+  blue:    { dot:'bg-blue-500',   head:'text-blue-600 dark:text-blue-400',    badge:'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',    border:'border-blue-500',    pill:'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' },
+  emerald: { dot:'bg-emerald-500',head:'text-emerald-600 dark:text-emerald-400',badge:'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300',border:'border-emerald-500',pill:'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300' },
+  amber:   { dot:'bg-amber-500',  head:'text-amber-600 dark:text-amber-400',  badge:'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300',  border:'border-amber-500',   pill:'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300' },
+  red:     { dot:'bg-red-500',    head:'text-red-600 dark:text-red-400',      badge:'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300',      border:'border-red-500',      pill:'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300' },
+};
+
+let globalData = null;
+
+function renderTask(task, color) {
+  const c = COLOR_MAP[color] || COLOR_MAP.slate;
+  const isConv = task.id && (task.id.length >= 8 && !task.id.startsWith('todo-') && !task.id.startsWith('kb-'));
+  const linkHtml = isConv 
+    ? `<a href="conversation://${task.id}" class="text-[11px] text-blue-500 hover:underline">對話 ↗</a>` 
+    : `<span class="text-[11px]" style="color:var(--muted)">${task.id}</span>`;
+
+  return `
+    <div class="task-card p-4 rounded-xl border-l-4 ${c.border} shadow-sm" data-search="${(task.tag + ' ' + task.title + ' ' + (task.desc||'')).toLowerCase()}">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold px-2.5 py-0.5 rounded-md ${c.badge}">${task.tag || ''}</span>
+        ${linkHtml}
+      </div>
+      <h3 class="text-sm font-bold mb-1.5 leading-snug">${task.title}</h3>
+      <p class="text-xs leading-relaxed" style="color:var(--muted)">${task.desc || ''}</p>
+    </div>`;
+}
+
+function renderColumn(key, col) {
+  const color = col.color || 'slate';
+  const c = COLOR_MAP[color] || COLOR_MAP.slate;
+  const tasks = col.tasks || [];
+  const tasksHtml = tasks.map(t => renderTask(t, color)).join('\n');
+  return `
+    <div class="kanban-col flex-shrink-0 w-80 md:w-88 rounded-2xl p-4 flex flex-col gap-3">
+      <div class="flex items-center justify-between mb-1 px-1">
+        <h2 class="text-sm font-bold flex items-center gap-2 ${c.head}">
+          <span class="w-2.5 h-2.5 rounded-full ${c.dot}"></span>${col.label}
+        </h2>
+        <span class="text-xs px-2.5 py-0.5 rounded-full font-bold" style="background:var(--card);color:var(--muted)">${tasks.length}</span>
+      </div>
+      <div class="space-y-3 col-tasks-container">${tasksHtml}</div>
+    </div>`;
+}
+
+function renderSummary(columns) {
+  const bar = document.getElementById('summary-bar');
+  let html = '';
+  for (const [key, col] of Object.entries(columns)) {
+    const color = col.color || 'slate';
+    const c = COLOR_MAP[color] || COLOR_MAP.slate;
+    const n = (col.tasks || []).length;
+    html += `<span class="text-xs px-3 py-1 rounded-full font-semibold ${c.pill}">${col.label.split('(')[0].trim()}：${n}</span>`;
+  }
+  bar.innerHTML = html;
+}
+
+function renderBoard(data) {
+  globalData = data;
+  const meta = data.meta || {};
+  document.getElementById('board-title').textContent = meta.title || 'Kanban';
+  document.getElementById('board-subtitle').textContent = meta.subtitle || '';
+  document.getElementById('board-updated').textContent = meta.last_updated ? '最後更新：' + meta.last_updated : '';
+  document.title = meta.title || 'Kanban';
+
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = Object.entries(data.columns || {})
+    .map(([key, col]) => renderColumn(key, col)).join('\n');
+
+  renderSummary(data.columns || {});
+
+}
+
+function handleFilter() {
+  const q = document.getElementById('filter-input').value.toLowerCase().trim();
+  document.querySelectorAll('.task-card').forEach(card => {
+    const s = card.getAttribute('data-search') || '';
+    card.style.display = (!q || s.includes(q)) ? 'block' : 'none';
+  });
+}
+
+// Fallback embedded data if fetch fails (e.g., local file:// CORS)
+const FALLBACK_DATA = {
+  "meta": {
+    "title": "MR693 全局任務看板",
+    "subtitle": "Antigravity Agentic Kanban — 跨對話全景整合與自主推進",
+    "last_updated": "2026-09-08",
+    "note": "由 AI 自動萃取 14 組對話日誌更新。支援 GitHub Pages 跨裝置即時瀏覽。"
+  },
+  "columns": {
+    "todo": {
+      "label": "待辦事項 (To Do)",
+      "color": "amber",
+      "tasks": [
+        {
+          "id": "todo-landbank-01",
+          "tag": "房產財務",
+          "title": "土地銀行臨櫃申辦「財夠力」理財型房貸",
+          "desc": "以北屯房貸為基礎申請理財型房貸額度，備妥 6 個月緊急預備金防線，動用才計息。"
+        },
+        {
+          "id": "todo-hao-pbl-01",
+          "tag": "家庭教育",
+          "title": "啟動浩浩第一個科技實作專案",
+          "desc": "落實 Dan Koe 專案導向學習 (PBL) 理念，由浩浩自選電腦/硬體專案，在實作中暴露問題並學習。"
+        },
+        {
+          "id": "todo-ipas-mock-01",
+          "tag": "AI證照",
+          "title": "iPAS AI 規劃師 60 選術語卡考前快篩",
+          "desc": "運用已建立之 60 選必備卡與雙向鏈結，進行考前快速翻牌測驗與概念反芻。"
+        },
+        {
+          "id": "todo-trello-01",
+          "tag": "外部串接",
+          "title": "評估並串接 Trello API",
+          "desc": "將任務看板機制雲端化，實作透過 Python 腳本呼叫 Trello API 實現雙向任務同步。"
+        }
+      ]
+    },
+    "in_progress": {
+      "label": "進行中 (In Progress)",
+      "color": "blue",
+      "tasks": [
+        {
+          "id": "26694156",
+          "tag": "系統整合",
+          "title": "全系統對話整合與主看板發布",
+          "desc": "修復 brain 目錄 Junction、全量萃取 14 組歷史對話、建立全局任務卡片與 GitHub 同步。"
+        },
+        {
+          "id": "b16bed8c",
+          "tag": "家庭教育",
+          "title": "浩浩 6 年國高中自主學習系統落實",
+          "desc": "每週安排 3 日共學陪伴、平板 Trello 協同、技職/興趣專長探索，以第二大腦作為創作燃料庫。"
+        }
+      ]
+    },
+    "done": {
+      "label": "已完成 (Done)",
+      "color": "emerald",
+      "tasks": [
+        {
+          "id": "5a49ed95",
+          "tag": "系統研發",
+          "title": "系統級對話歷史自動掃描機制研發",
+          "desc": "探索系統自動讀取對話日誌與 SQLite 的自動化機制，奠定全局看板基礎。"
+        },
+        {
+          "id": "b769e1a0",
+          "tag": "AI證照",
+          "title": "iPAS AI 應用規劃師 60 選術語庫與 Git 工作流",
+          "desc": "完成 60 選高頻術語卡、初中級雙向導航、通俗白話重構，配置本機 Git 自動推播。"
+        },
+        {
+          "id": "f2b000d8",
+          "tag": "房產財務",
+          "title": "北屯賣房 vs 員林置產全景決策辯論",
+          "desc": "定調 2028 調動前維持出租養房抗通膨；產出 6 份極限辯論與財務分析 HTML 報告。"
+        },
+        {
+          "id": "2fcde031",
+          "tag": "房產財務",
+          "title": "土地銀行理財型房貸評估（推翻 6.9% 信貸）",
+          "desc": "分析「財夠力」理財型房貸動用才計息特性，推翻一般高利信貸，確立現金流安全網。"
+        },
+        {
+          "id": "a8f15690",
+          "tag": "資產管理",
+          "title": "MR693 目錄大重組與 04_archives 活化",
+          "desc": "打散歷史分類、活化模板至 03_resources，產出 directory_structures.md 全域規範。"
+        },
+        {
+          "id": "0abdbd7b",
+          "tag": "內容維護",
+          "title": "知識庫 7 篇精華文章標記批次修復",
+          "desc": "批次修復 7 篇個人商業、思維模型與健康壽命文章之 HTML 螢光筆醒目標記。"
+        },
+        {
+          "id": "4f6f48e6",
+          "tag": "系統環境",
+          "title": "Google Drive 本機同步設定最佳實踐",
+          "desc": "釐清串流與鏡像同步模式，指引啟用「一律保留在此裝置上」，確保離線立即可用。"
+        },
+        {
+          "id": "94e338df",
+          "tag": "知識管理",
+          "title": "Obsidian 個人知識庫建置與 Notion 評估",
+          "desc": "引導結合雲端硬碟建構 Obsidian 本地筆記庫與 Notion 工具定位選型。"
+        },
+        {
+          "id": "96c2f333",
+          "tag": "系統演進",
+          "title": "初代對話歷史看板建置",
+          "desc": "建立第一代 Markdown 看板與 HTML 原型，測試 conversation:// 鏈結。"
+        },
+        {
+          "id": "98bc48ff",
+          "tag": "系統雜項",
+          "title": "看板專案與任務清單即時查詢",
+          "desc": "完成看板專案狀態之即時查詢與列出。"
+        },
+        {
+          "id": "a4c34043",
+          "tag": "房產財務",
+          "title": "員林置產北屯賣房前置評估",
+          "desc": "房地產買賣前置詢問，已在 f2b000d8 深度完整展開並結案。"
+        },
+        {
+          "id": "kb-clean-01",
+          "tag": "知識管理",
+          "title": "MR693 知識庫全面整理",
+          "desc": "清除 Inbox 殘留、搬移備考筆記、整理 01_projects 至 5 個精簡專案。"
+        }
+      ]
+    }
+  }
+};
+
+fetch('tasks.json?_=' + Date.now())
+  .then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(data => renderBoard(data))
+  .catch(err => {
+    console.warn('載入 tasks.json 失敗，改用內建快照資料：', err);
+    renderBoard(FALLBACK_DATA);
+  });
+</script>
+</body>
+</html>
