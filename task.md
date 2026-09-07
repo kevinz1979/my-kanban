@@ -19,11 +19,13 @@
   - [x] **【領域 4】數位資產與知識庫重構**：MR693 目錄重組、04_archives 歷史資產打散活化、7 篇知識庫 HTML 標記修復、Obsidian 建置
   - [x] **【領域 5】系統維護與雲端同步**：Google Drive 雙向鏡像/串流配置指南、看板自動化讀取架構探討
 
-- [/] **階段三：發布整合總看板與導航**
+- [/] **階段三：發布整合總看板與 GitHub 雲端部署**
   - [x] 建立標準任務追蹤卡片 [`task.md`](file:///C:/Users/Kevin/.gemini/antigravity/brain/26694156-7129-4a14-ab7c-b06644e3a334/task.md)
   - [x] 建立全系統對話整合卡片 [`master_conversations_hub.md`](file:///C:/Users/Kevin/.gemini/antigravity/brain/26694156-7129-4a14-ab7c-b06644e3a334/master_conversations_hub.md)
   - [x] 建立高階視覺化互動看板 [`conversations_kanban_dashboard.html`](file:///C:/Users/Kevin/.gemini/antigravity/brain/26694156-7129-4a14-ab7c-b06644e3a334/conversations_kanban_dashboard.html)
+  - [x] 成功推送至 GitHub 專案倉庫：[`kevinz1979/my-kanban`](https://github.com/kevinz1979/my-kanban)
   - [ ] 追蹤各領域近期待辦：土地銀行臨櫃諮詢、浩浩共學專案啟動、iPAS 考前模擬測驗
+
 
 ---
 
