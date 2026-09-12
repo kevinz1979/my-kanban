@@ -35,7 +35,7 @@
           "issue": 16,
           "tag": "知識資產",
           "title": "00_Inbox 影音每週歸檔 ＆ 智庫聚焦 03 資源",
-          "desc": "每週定期清理 YouTube 轉錄 HTML 歸檔至 03_resources；改造圖書館 Web App 排除 04_archives，專注呈現 03 精選藏書。"
+          "desc": "已打造 auto_triage 自動分流與純淨索引；雙擊「啟動知識庫.bat」即可一鍵全自動歸檔並開啟 389 篇精品圖書館。"
         },
         {
           "id": "linebank-70w-loan",
