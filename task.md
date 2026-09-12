@@ -36,7 +36,7 @@
 
 | 領域分類 | 代表對話與目標 | 狀態 | 核心產出 |
 | :--- | :--- | :---: | :--- |
-| **🏠 房產與財務** | [北屯/員林房產極限辯論](conversation://f2b000d8-e265-4f89-a62e-581e4d61629c)<br/>[土銀理財型房貸評估](conversation://2fcde031-faa6-485a-bb19-705bcb99a98e) | ✅ 已完成 | 6 份 HTML 策略分析與辯論報告 |
+| **🏠 房產與財務** | [北屯/員林房產極限辯論](conversation://f2b000d8-e265-4f89-a62e-581e4d61629c)<br/>[土銀理財型房貸評估](conversation://2fcde031-faa6-485a-bb19-705bcb99a98e)<br/>**LINE Bank 70萬信貸配置** (Issue #15) | 🔄 進行中 | 北屯收租防守、卡債清償、0050定期定額 |
 | **🎓 家庭與教育** | [浩浩六年自主學習規劃](conversation://b16bed8c-b726-43ec-a05b-335be8cdbd7d) | 🔄 進行中 | `hao_hao_learning_plan_dashboard.html` |
 | **🚀 AI 證照與工程** | [iPAS AI 術語庫與 Git](conversation://b769e1a0-a410-483c-9f73-3c76a7a3d669) | ✅ 已完成 | `ai-core-50-terms.html`、Git 流程 |
 | **📚 知識與檔案** | [MR693 資料夾結構整頓](conversation://a8f15690-0ed5-4fba-8ddb-de0a911682f8)<br/>[知識庫文章標記修復](conversation://0abdbd7b-2c88-49fd-9016-4ee1f4379708) | ✅ 已完成 | `directory_structures.md`、7篇精修HTML |
