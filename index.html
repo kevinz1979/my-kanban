@@ -67,12 +67,30 @@ const COLOR_MAP = {
 
 let globalData = null;
 
+function copyConvId(id) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(id).then(() => {
+      alert('📋 已複製對話 ID: ' + id + '\n\n您可以在 Antigravity 搜尋歷史對話，或直接對 AI 說：「接續對話 ' + id.substring(0,8) + '」！');
+    }).catch(() => {
+      prompt('請手動複製對話 ID：', id);
+    });
+  } else {
+    prompt('請手動複製對話 ID：', id);
+  }
+}
+
 function renderTask(task, color) {
   const c = COLOR_MAP[color] || COLOR_MAP.slate;
-  const isConv = task.id && (task.id.length >= 8 && !task.id.startsWith('todo-') && !task.id.startsWith('kb-'));
-  const linkHtml = isConv 
-    ? `<a href="conversation://${task.id}" class="text-[11px] text-blue-500 hover:underline">對話 ↗</a>` 
-    : `<span class="text-[11px]" style="color:var(--muted)">${task.id}</span>`;
+  const isConv = task.id && (task.id.length >= 8 && !task.id.startsWith('todo-') && !task.id.startsWith('kb-') && !task.id.startsWith('milestone-') && !task.id.startsWith('linebank-'));
+  
+  let linkHtml = '';
+  if (task.issue) {
+    linkHtml = `<a href="https://github.com/kevinz1979/my-kanban/issues/${task.issue}" target="_blank" class="text-[11px] font-semibold text-blue-500 hover:underline flex items-center gap-0.5">Issue #${task.issue} ↗</a>`;
+  } else if (isConv) {
+    linkHtml = `<button onclick="copyConvId('${task.id}')" title="點擊複製對話 ID" class="text-[11px] text-blue-500 hover:underline cursor-pointer">對話: ${task.id.substring(0,8)} 📋</button>`;
+  } else {
+    linkHtml = `<span class="text-[11px]" style="color:var(--muted)">${task.id}</span>`;
+  }
 
   return `
     <div class="task-card p-4 rounded-xl border-l-4 ${c.border} shadow-sm" data-search="${(task.tag + ' ' + task.title + ' ' + (task.desc||'')).toLowerCase()}">
