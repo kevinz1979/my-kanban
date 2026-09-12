@@ -39,5 +39,5 @@
 | **🏠 房產與財務** | [北屯/員林房產極限辯論](conversation://f2b000d8-e265-4f89-a62e-581e4d61629c)<br/>[土銀理財型房貸評估](conversation://2fcde031-faa6-485a-bb19-705bcb99a98e)<br/>**LINE Bank 70萬信貸配置** (Issue #15) | 🔄 進行中 | 北屯收租防守、卡債清償、0050定期定額 |
 | **🎓 家庭與教育** | [浩浩六年自主學習規劃](conversation://b16bed8c-b726-43ec-a05b-335be8cdbd7d) | 🔄 進行中 | `hao_hao_learning_plan_dashboard.html` |
 | **🚀 AI 證照與工程** | [iPAS AI 術語庫與 Git](conversation://b769e1a0-a410-483c-9f73-3c76a7a3d669) | ✅ 已完成 | `ai-core-50-terms.html`、Git 流程 |
-| **📚 知識與檔案** | [MR693 資料夾結構整頓](conversation://a8f15690-0ed5-4fba-8ddb-de0a911682f8)<br/>[知識庫文章標記修復](conversation://0abdbd7b-2c88-49fd-9016-4ee1f4379708) | ✅ 已完成 | `directory_structures.md`、7篇精修HTML |
+| **📚 知識與檔案** | [MR693 資料夾結構整頓](conversation://a8f15690-0ed5-4fba-8ddb-de0a911682f8)<br/>**00_Inbox每週歸檔 ＆ 智庫聚焦03資源** (Issue #16) | 🔄 進行中 | 排除04歷史雜訊、03精品圖書館、每週分流 |
 | **⚙️ 系統與同步** | [Google Drive 同步指南](conversation://4f6f48e6-539d-4305-be80-2a5a409b74a2)<br/>[看板自動化系統研發](conversation://5a49ed95-ae44-406b-89c1-001a7379d104)<br/>[全系統整合總卡片](conversation://26694156-7129-4a14-ab7c-b06644e3a334)<br/>[本對話：雙機路徑整頓與MCP修復](conversation://cc1eb7dc-de9e-43ad-8739-c50b5ce07188) | 🚀 最新完成 | Issue #14、動態 MCP<br/>[線上全局看板](https://kevinz1979.github.io/my-kanban/) |
