@@ -19,13 +19,16 @@
   - [x] **【領域 4】數位資產與知識庫重構**：MR693 目錄重組、04_archives 歷史資產打散活化、7 篇知識庫 HTML 標記修復、Obsidian 建置
   - [x] **【領域 5】系統維護與雲端同步**：Google Drive 雙向鏡像/串流配置指南、看板自動化讀取架構探討
 
-- [/] **階段三：發布整合總看板與 GitHub 雲端部署**
-  - [x] 建立標準任務追蹤卡片 [`task.md`](file:///C:/Users/Kevin/.gemini/antigravity/brain/26694156-7129-4a14-ab7c-b06644e3a334/task.md)
-  - [x] 建立全系統對話整合卡片 [`master_conversations_hub.md`](file:///C:/Users/Kevin/.gemini/antigravity/brain/26694156-7129-4a14-ab7c-b06644e3a334/master_conversations_hub.md)
-  - [x] 建立高階視覺化互動看板 [`conversations_kanban_dashboard.html`](file:///C:/Users/Kevin/.gemini/antigravity/brain/26694156-7129-4a14-ab7c-b06644e3a334/conversations_kanban_dashboard.html)
+- [x] **階段三：發布整合總看板與 GitHub 雲端部署**
+  - [x] 建立標準任務追蹤卡片 `task.md`
+  - [x] 建立高階視覺化互動看板 `conversations_kanban_dashboard.html`
   - [x] 成功推送至 GitHub 專案倉庫：[`kevinz1979/my-kanban`](https://github.com/kevinz1979/my-kanban)
-  - [ ] 追蹤各領域近期待辦：土地銀行臨櫃諮詢、浩浩共學專案啟動、iPAS 考前模擬測驗
 
+- [x] **階段四：雙機協作邊界整頓與 MCP 底層修復 (2026-09-12)**
+  - [x] 診斷雙機 Google Drive 與實體磁碟衝突，定調 PARA 本地實體落地原則
+  - [x] 修復 `mcp_config.json` 動態路徑（支援 `kevinz` 與 `Kevin` 雙機）
+  - [x] 修復 `github_mcp.py` Windows 二進位 stdio / CRLF 讀取缺陷
+  - [x] 建立 Issue #14 並重啟 GitHub Pages 全局線上看板
 
 ---
 
@@ -37,4 +40,4 @@
 | **🎓 家庭與教育** | [浩浩六年自主學習規劃](conversation://b16bed8c-b726-43ec-a05b-335be8cdbd7d) | 🔄 進行中 | `hao_hao_learning_plan_dashboard.html` |
 | **🚀 AI 證照與工程** | [iPAS AI 術語庫與 Git](conversation://b769e1a0-a410-483c-9f73-3c76a7a3d669) | ✅ 已完成 | `ai-core-50-terms.html`、Git 流程 |
 | **📚 知識與檔案** | [MR693 資料夾結構整頓](conversation://a8f15690-0ed5-4fba-8ddb-de0a911682f8)<br/>[知識庫文章標記修復](conversation://0abdbd7b-2c88-49fd-9016-4ee1f4379708) | ✅ 已完成 | `directory_structures.md`、7篇精修HTML |
-| **⚙️ 系統與同步** | [Google Drive 同步指南](conversation://4f6f48e6-539d-4305-be80-2a5a409b74a2)<br/>[看板自動化系統研發](conversation://5a49ed95-ae44-406b-89c1-001a7379d104)<br/>[本對話：全系統整合卡片](conversation://26694156-7129-4a14-ab7c-b06644e3a334) | 🚀 本次新增 | `master_conversations_hub.md`<br/>`conversations_kanban_dashboard.html` |
+| **⚙️ 系統與同步** | [Google Drive 同步指南](conversation://4f6f48e6-539d-4305-be80-2a5a409b74a2)<br/>[看板自動化系統研發](conversation://5a49ed95-ae44-406b-89c1-001a7379d104)<br/>[全系統整合總卡片](conversation://26694156-7129-4a14-ab7c-b06644e3a334)<br/>[本對話：雙機路徑整頓與MCP修復](conversation://cc1eb7dc-de9e-43ad-8739-c50b5ce07188) | 🚀 最新完成 | Issue #14、動態 MCP<br/>[線上全局看板](https://kevinz1979.github.io/my-kanban/) |

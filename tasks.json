@@ -2,8 +2,8 @@
   "meta": {
     "title": "MR693 全局任務看板",
     "subtitle": "Antigravity Agentic Kanban — 跨對話全景整合與自主推進",
-    "last_updated": "2026-09-08",
-    "note": "由 AI 自動萃取 14 組對話日誌更新。支援 GitHub Pages 跨裝置即時瀏覽。"
+    "last_updated": "2026-09-12",
+    "note": "由 AI 自動萃取全量對話日誌更新。支援 GitHub Pages 跨裝置即時瀏覽。"
   },
   "columns": {
     "todo": {
@@ -29,10 +29,10 @@
           "desc": "運用已建立之 60 選必備卡與雙向鏈結，進行考前快速翻牌測驗與概念反芻。"
         },
         {
-          "id": "todo-trello-01",
-          "tag": "外部串接",
-          "title": "評估並串接 Trello API",
-          "desc": "將任務看板機制雲端化，實作透過 Python 腳本呼叫 Trello API 實現雙向任務同步。"
+          "id": "todo-pc-b-check-01",
+          "tag": "系統環境",
+          "title": "電腦 B 開機檢核 Google Drive 本地常駐",
+          "desc": "確認電腦 B 的 MR693 設定為「一律保留在此裝置上」，驗證 Antigravity 流暢度與 MCP 連線。"
         }
       ]
     },
@@ -40,12 +40,6 @@
       "label": "進行中 (In Progress)",
       "color": "blue",
       "tasks": [
-        {
-          "id": "26694156",
-          "tag": "系統整合",
-          "title": "全系統對話整合與主看板發布",
-          "desc": "修復 brain 目錄 Junction、全量萃取 14 組歷史對話、建立全局任務卡片與 GitHub 同步。"
-        },
         {
           "id": "b16bed8c",
           "tag": "家庭教育",
@@ -58,6 +52,18 @@
       "label": "已完成 (Done)",
       "color": "emerald",
       "tasks": [
+        {
+          "id": "cc1eb7dc",
+          "tag": "系統工程",
+          "title": "雙機路徑整頓、MCP 修復與全局看板重啟",
+          "desc": "確立本地磁碟與雲端邊界、修復 Windows CRLF 與動態路徑缺陷，建立 Issue #14 並重啟全局同步。"
+        },
+        {
+          "id": "26694156",
+          "tag": "系統整合",
+          "title": "全系統對話整合與主看板發布",
+          "desc": "修復 brain 目錄 Junction、全量萃取 14 組歷史對話、建立全局任務卡片與 GitHub 同步。"
+        },
         {
           "id": "5a49ed95",
           "tag": "系統研發",
